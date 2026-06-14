@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Car Price Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="overlay">
+    <div class="container">
+        <h1>Used Car Price Predictor</h1>
+
+        <select id="brand">
+            <option value="">Select Brand</option>
+            <option>Ford</option>
+            <option>Audi</option>
+            <option>Hyundai</option>
+        </select>
+
+        <input id="year" placeholder="Model Year">
+
+        <input id="milage" placeholder="Mileage">
+
+        <select id="fuel">
+            <option value="">Select Fuel Type</option>
+            <option>Petrol</option>
+            <option>Diesel</option>
+            <option>Gasoline</option>
+            <option>Hybrid</option>
+        </select>
+
+        <button onclick="predictPrice()">Predict Price</button>
+
+        <div id="result-card" class="result-card hidden">
+            <h3>Estimated Market Value</h3>
+            <p id="result"></p>
+        </div>
+    </div>
+</div>
+
+<script>
+async function predictPrice() {
+    const brand = document.getElementById("brand").value;
+    const year = document.getElementById("year").value;
+    const milage = document.getElementById("milage").value;
+    const fuel = document.getElementById("fuel").value;
+
+    if (!brand) {
+        alert("Select brand");
+        return;
+    }
+
+    if (!year || year < 1990 || year > 2026) {
+        alert("Enter valid year");
+        return;
+    }
+
+    if (!milage || milage < 0) {
+        alert("Enter valid mileage");
+        return;
+    }
+
+    if (!fuel) {
+        alert("Select fuel type");
+        return;
+    }
+
+    document.getElementById("result-card").classList.remove("hidden");
+    document.getElementById("result").innerText = "Predicting...";
+
+    const response = await fetch("/predict", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            brand: brand,
+            model_year: year,
+            milage: milage,
+            fuel_type: fuel
+        })
+    });
+
+    const data = await response.json();
+
+    document.getElementById("result").innerText =
+        "$ " + data.predicted_price;
+}
+</script>
+
+</body>
+</html>
