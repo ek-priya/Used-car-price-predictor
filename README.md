@@ -221,8 +221,10 @@ Through this project, I learned:
 ## Author
 
 **Keerthi Priya**
+
 B.Tech Computer Science Engineering Student
-Passionate about Full Stack Development, AI, and Problem Solving
+
+Passionate about Full Stack Development, and Problem Solving
 
 ---
 
